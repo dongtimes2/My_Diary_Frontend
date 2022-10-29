@@ -2,8 +2,6 @@ import { createGlobalStyle } from 'styled-components';
 import { reset } from 'styled-reset';
 
 const GlobalStyles = createGlobalStyle`
-  @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-
   ${reset}
 
   body {
