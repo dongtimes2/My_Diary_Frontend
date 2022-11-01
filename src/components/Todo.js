@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
 import selectedDateState from '../recoil/dateState';
+import dateParamGenerator from '../utils/dateParamGenerator';
 
 const Todo = () => {
   const [title, setTitle] = useState('');
@@ -11,6 +13,26 @@ const Todo = () => {
   const [todoList, setTodoList] = useState([]);
 
   const selectedDate = useRecoilValue(selectedDateState);
+
+  useEffect(() => {
+    const params = dateParamGenerator(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.date,
+    );
+
+    const loadTodo = async () => {
+      const result = await axios.get(
+        process.env.REACT_APP_SERVER_URL + '/todo/' + params,
+      );
+
+      result.data?.todos
+        ? setTodoList([...result.data.todos])
+        : setTodoList([]);
+    };
+
+    params && loadTodo();
+  }, [selectedDate]);
 
   const handleInputTitle = (event) => {
     setTitle(event.target.value);
@@ -26,13 +48,22 @@ const Todo = () => {
     }
   };
 
-  const handleSavetodo = () => {};
+  const handleSavetodo = async (date) => {
+    const params = dateParamGenerator(date.year, date.month, date.date);
+
+    if (params) {
+      await axios.post(
+        process.env.REACT_APP_SERVER_URL + '/todo/' + params,
+        todoList,
+      );
+    }
+  };
 
   const handleCreateTodo = () => {
     if (title.length) {
       const newTodoElement = {
         id: uuidv4(),
-        date: `${selectedDate.year}-${selectedDate.month}-${selectedDate.date}`,
+        createdAt: `${selectedDate.year}${selectedDate.month}${selectedDate.date}`,
         title,
         content,
         isChecked: false,
@@ -61,29 +92,31 @@ const Todo = () => {
 
   return (
     <>
-      <div>
+      <DateInfoBox>
         선택된 날짜: {selectedDate.year}년 {selectedDate.month}월{' '}
         {selectedDate.date}일
-      </div>
+      </DateInfoBox>
 
-      <input
-        value={title}
-        onChange={handleInputTitle}
-        onKeyDown={handleEnterKeyDown}
-        placeholder="이곳에 제목을 입력 (최대 30자)"
-        maxLength="30"
-      />
-      <textarea
-        value={content}
-        onChange={handleInputContent}
-        placeholder="이곳에 설명을 입력"
-      />
+      <TodoInputBox>
+        <input
+          value={title}
+          onChange={handleInputTitle}
+          onKeyDown={handleEnterKeyDown}
+          placeholder="이곳에 제목을 입력 (최대 30자)"
+          maxLength="30"
+        />
+        <textarea
+          value={content}
+          onChange={handleInputContent}
+          placeholder="이곳에 설명을 입력"
+        />
 
-      <button type="button" onClick={handleCreateTodo}>
-        확인
-      </button>
+        <button type="button" onClick={handleCreateTodo}>
+          확인
+        </button>
+      </TodoInputBox>
 
-      <ul>
+      <TodoItemList>
         {todoList.map((todo, index) => (
           <TodoItem key={todo.id}>
             <div className="checkbox-area">
@@ -110,14 +143,95 @@ const Todo = () => {
             </div>
           </TodoItem>
         ))}
-      </ul>
+      </TodoItemList>
 
-      <button type="button" onClick={handleSavetodo}>
-        저장하기
-      </button>
+      <SaveButtonBox>
+        <button type="button" onClick={() => handleSavetodo(selectedDate)}>
+          저장하기
+        </button>
+      </SaveButtonBox>
     </>
   );
 };
+
+const SaveButtonBox = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: lightgray;
+
+  & > button {
+    width: 90%;
+    padding: 10px 0;
+    font-size: 20px;
+    margin: 10px 0;
+    border: 0;
+    border-radius: 20px;
+    transition-duration: 0.3s;
+  }
+
+  & > button:hover {
+    background-color: gray;
+    color: white;
+  }
+`;
+
+const DateInfoBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  padding: 26px 0;
+`;
+
+const TodoInputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: lightgray;
+  height: 410px;
+
+  & > input {
+    width: 90%;
+    border: 0;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 22px;
+    margin: 10px 0;
+  }
+
+  & > textarea {
+    width: 90%;
+    height: 150px;
+    border: 0;
+    border-radius: 20px;
+    padding: 10px;
+    resize: none;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  & > button {
+    width: 93%;
+    border: 0;
+    border-radius: 20px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+
+    transition-duration: 0.3s;
+  }
+
+  & > button:hover {
+    background-color: gray;
+    color: white;
+  }
+`;
+
+const TodoItemList = styled.ul`
+  height: 100%;
+  overflow: scroll;
+`;
 
 const TodoItem = styled.li`
   display: flex;
