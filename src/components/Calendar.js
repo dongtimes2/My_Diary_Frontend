@@ -11,7 +11,6 @@ const Calendar = () => {
   const setSelectedDate = useSetRecoilState(selectedDateState);
 
   const dateList = [];
-  const today = dayjs();
 
   const lastDayOfPastMonth = day.add(-1, 'month').endOf('month').day();
   const lastDateOfPastMonth = day.add(-1, 'month').daysInMonth();
@@ -22,19 +21,35 @@ const Calendar = () => {
     setSelectedDate((prev) => {
       return {
         ...prev,
-        year: today.year(),
-        month: today.month() + 1,
-        date: today.date(),
+        year: dayjs().year(),
+        month: dayjs().month() + 1,
+        date: dayjs().date(),
       };
     });
-  }, []);
+  }, [setSelectedDate]);
 
   const handleGoPrevMonth = () => {
     setDay((day) => day.add(-1, 'month'));
+    setSelectedDate((prev) => {
+      return {
+        ...prev,
+        year: day.add(-1, 'month').year(),
+        month: day.add(-1, 'month').month() + 1,
+        date: 1,
+      };
+    });
   };
 
   const handleGoNextMonth = () => {
     setDay((day) => day.add(1, 'month'));
+    setSelectedDate((prev) => {
+      return {
+        ...prev,
+        year: day.add(1, 'month').year(),
+        month: day.add(1, 'month').month() + 1,
+        date: 1,
+      };
+    });
   };
 
   const handleGoToday = () => {
@@ -42,9 +57,9 @@ const Calendar = () => {
     setSelectedDate((prev) => {
       return {
         ...prev,
-        year: today.year(),
-        month: today.month() + 1,
-        date: today.date(),
+        year: dayjs().year(),
+        month: dayjs().month() + 1,
+        date: dayjs().date(),
       };
     });
   };
@@ -62,7 +77,7 @@ const Calendar = () => {
 
     dateList.push(
       <DateSpan
-        key={dateOfPastMonth}
+        key={`p${yearOfPastMonth}${pastMonth}${dateOfPastMonth}`}
         onClick={() => {
           handleDayClick(yearOfPastMonth, pastMonth, dateOfPastMonth);
         }}
@@ -83,14 +98,14 @@ const Calendar = () => {
 
     dateList.push(
       <DateSpan
-        key={dateOfThisMonth + 50}
+        key={`t${yearOfThisMonth}${thisMonth}${dateOfThisMonth}`}
         onClick={() => {
           handleDayClick(yearOfThisMonth, thisMonth, dateOfThisMonth);
         }}
         color={
-          day.year() === today.year() &&
-          day.month() === today.month() &&
-          dateOfThisMonth === today.date()
+          day.year() === dayjs().year() &&
+          day.month() === dayjs().month() &&
+          dateOfThisMonth === dayjs().date()
             ? 'red'
             : 'black'
         }
@@ -107,7 +122,7 @@ const Calendar = () => {
 
     dateList.push(
       <DateSpan
-        key={7 - pivot + 100}
+        key={`n${yearOfNextMonth}${nextMonth}${dateOfNextMonth}`}
         onClick={() => {
           handleDayClick(yearOfNextMonth, nextMonth, dateOfNextMonth);
         }}
@@ -170,7 +185,7 @@ const ControlBox = styled.div`
   & button {
     font-size: 20px;
     padding: 3px 10px;
-    border-radius: 15%;
+    border-radius: 10px;
     border: 1px solid gray;
     background-color: white;
     transition-duration: 0.3s;
