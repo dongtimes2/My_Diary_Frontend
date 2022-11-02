@@ -1,4 +1,5 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -7,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import selectedDateState from '../recoil/dateState';
 import dateParamGenerator from '../utils/dateParamGenerator';
 
-const Todo = () => {
+const Todo = ({ onShowModal, setSelectedTodo }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [todoList, setTodoList] = useState([]);
@@ -83,6 +84,11 @@ const Todo = () => {
     setTodoList([...todoList.filter((_, idx) => idx !== index)]);
   };
 
+  const handleShowModal = (data) => {
+    onShowModal(true);
+    setSelectedTodo(data);
+  };
+
   const handleCheckTodo = (index) => {
     const newTodoList = [...todoList];
     newTodoList[index].isChecked = newTodoList[index].isChecked ? false : true;
@@ -133,7 +139,11 @@ const Todo = () => {
 
             <div className="button-area">
               <div className="detail-button-area">
-                {todo.content && <button>상세</button>}
+                {todo.content && (
+                  <button type="button" onClick={() => handleShowModal(todo)}>
+                    상세
+                  </button>
+                )}
               </div>
               <div className="delete-button-area">
                 <button type="button" onClick={() => handleDeleteTodo(index)}>
@@ -152,6 +162,11 @@ const Todo = () => {
       </SaveButtonBox>
     </>
   );
+};
+
+Todo.propTypes = {
+  onShowModal: PropTypes.func.isRequired,
+  setSelectedTodo: PropTypes.func.isRequired,
 };
 
 const SaveButtonBox = styled.div`
