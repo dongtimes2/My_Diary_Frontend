@@ -5,13 +5,14 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
+import useInput from '../hooks/useInput';
 import selectedDateState from '../recoil/dateState';
 import dateParamGenerator from '../utils/dateParamGenerator';
 
 const Todo = ({ onShowModal, setSelectedTodo }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [todoList, setTodoList] = useState([]);
+  const [title, setTitle, titleReset] = useInput('');
+  const [content, setContent, contentReset] = useInput('');
 
   const selectedDate = useRecoilValue(selectedDateState);
 
@@ -34,14 +35,6 @@ const Todo = ({ onShowModal, setSelectedTodo }) => {
 
     params && loadTodo();
   }, [selectedDate]);
-
-  const handleInputTitle = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleInputContent = (event) => {
-    setContent(event.target.value);
-  };
 
   const handleEnterKeyDown = (event) => {
     if (event.keyCode === 13) {
@@ -70,8 +63,9 @@ const Todo = ({ onShowModal, setSelectedTodo }) => {
         isChecked: false,
       };
 
-      setTitle('');
-      setContent('');
+      titleReset();
+      contentReset();
+
       setTodoList((prev) => {
         return [...prev, newTodoElement];
       });
@@ -105,15 +99,15 @@ const Todo = ({ onShowModal, setSelectedTodo }) => {
 
       <TodoInputBox>
         <input
-          value={title}
-          onChange={handleInputTitle}
           onKeyDown={handleEnterKeyDown}
           placeholder="이곳에 제목을 입력 (최대 30자)"
           maxLength="30"
+          onChange={setTitle}
+          value={title}
         />
         <textarea
           value={content}
-          onChange={handleInputContent}
+          onChange={setContent}
           placeholder="이곳에 설명을 입력"
         />
 
