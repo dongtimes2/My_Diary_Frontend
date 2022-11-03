@@ -188,8 +188,9 @@ const DateInfoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 25px;
-  padding: 26px 0;
+  font-size: 35px;
+  padding: 20px 0;
+  border-bottom: 1px solid lightgray;
 `;
 
 const TodoInputBox = styled.div`
@@ -205,7 +206,7 @@ const TodoInputBox = styled.div`
     border: 0;
     border-radius: 20px;
     padding: 10px;
-    font-size: 22px;
+    font-size: 20px;
     margin: 10px 0;
   }
 
@@ -246,6 +247,19 @@ const TodoItem = styled.li`
   display: flex;
   width: 100%;
   padding: 5px 0;
+  border-bottom: 1px solid lightgray;
+
+  & button {
+    padding: 5px 7px;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 5px;
+    transition-duration: 0.3s;
+  }
+
+  & button:hover {
+    background-color: lightgray;
+  }
 
   .checkbox-area {
     display: flex;

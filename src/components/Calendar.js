@@ -184,11 +184,12 @@ const ControlBox = styled.div`
 
   & button {
     font-size: 20px;
-    padding: 3px 10px;
+    padding: 5px 10px;
     border-radius: 10px;
     border: 1px solid gray;
     background-color: white;
     transition-duration: 0.3s;
+    height: 35px;
 
     &:hover {
       background-color: lightgray;
@@ -200,6 +201,7 @@ const ControlBox = styled.div`
     justify-content: center;
     align-items: center;
     flex-basis: 20%;
+    height: 100%;
   }
 
   .control-middle-area {
@@ -215,6 +217,7 @@ const ControlBox = styled.div`
     justify-content: space-around;
     align-items: center;
     flex-basis: 40%;
+    height: 100%;
   }
 `;
 
