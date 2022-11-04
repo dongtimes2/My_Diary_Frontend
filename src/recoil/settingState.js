@@ -2,7 +2,9 @@ import { atom } from 'recoil';
 
 const settingState = atom({
   key: 'settingState',
-  default: {},
+  default: {
+    image: '',
+  },
 });
 
 export default settingState;

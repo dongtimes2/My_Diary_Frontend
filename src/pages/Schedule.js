@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import Calendar from '../components/Calendar';
@@ -7,14 +8,17 @@ import Modal from '../components/Modal';
 import ModalPortal from '../components/ModalPortal';
 import Sidebar from '../components/Sidebar';
 import Todo from '../components/Todo';
+import settingState from '../recoil/settingState';
 
 const Schedule = () => {
   const [isShowingModal, setIsShowingModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState();
 
+  const settings = useRecoilValue(settingState);
+
   return (
     <>
-      <PageBox>
+      <PageBox image={settings.image}>
         <SidebarBox>
           <Sidebar />
         </SidebarBox>
@@ -44,6 +48,8 @@ const PageBox = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
+  background-image: url(${(props) => props.image});
+  background-size: 100% 100%;
 `;
 
 const SidebarBox = styled.div`
@@ -68,7 +74,6 @@ const TodoBox = styled.div`
   flex-direction: column;
   flex-basis: 40%;
   width: 100%;
-  border-left: 1px solid lightgray;
 `;
 
 export default Schedule;

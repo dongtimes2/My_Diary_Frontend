@@ -147,6 +147,7 @@ const Todo = ({ onShowModal, setSelectedTodo }) => {
             </div>
           </TodoItem>
         ))}
+        {!todoList.length && <BlankItem>저장된 기록이 없습니다</BlankItem>}
       </TodoItemList>
 
       <SaveButtonBox>
@@ -163,10 +164,21 @@ Todo.propTypes = {
   setSelectedTodo: PropTypes.func.isRequired,
 };
 
+const BlankItem = styled.li`
+  text-align: center;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 const SaveButtonBox = styled.div`
   display: flex;
   justify-content: center;
   background-color: lightgray;
+  border-radius: 20px;
+  background-color: rgba(224, 223, 220, 25%);
 
   & > button {
     width: 90%;
@@ -176,6 +188,7 @@ const SaveButtonBox = styled.div`
     border: 0;
     border-radius: 20px;
     transition-duration: 0.3s;
+    background-color: rgba(255, 255, 255, 70%);
   }
 
   & > button:hover {
@@ -190,7 +203,9 @@ const DateInfoBox = styled.div`
   align-items: center;
   font-size: 35px;
   padding: 20px 0;
-  border-bottom: 1px solid lightgray;
+  background-color: rgba(50, 50, 50, 40%);
+  border-radius: 20px;
+  color: white;
 `;
 
 const TodoInputBox = styled.div`
@@ -198,8 +213,9 @@ const TodoInputBox = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: lightgray;
+  background-color: rgba(224, 223, 220, 25%);
   height: 410px;
+  border-radius: 20px;
 
   & > input {
     width: 90%;
@@ -208,6 +224,7 @@ const TodoInputBox = styled.div`
     padding: 10px;
     font-size: 20px;
     margin: 10px 0;
+    background-color: rgba(220, 220, 220, 80%);
   }
 
   & > textarea {
@@ -219,6 +236,7 @@ const TodoInputBox = styled.div`
     resize: none;
     font-size: 20px;
     margin-bottom: 10px;
+    background-color: rgba(220, 220, 220, 80%);
   }
 
   & > button {
@@ -228,7 +246,7 @@ const TodoInputBox = styled.div`
     padding: 10px 0;
     margin-bottom: 10px;
     font-size: 20px;
-
+    background-color: rgba(255, 255, 255, 70%);
     transition-duration: 0.3s;
   }
 
@@ -241,13 +259,16 @@ const TodoInputBox = styled.div`
 const TodoItemList = styled.ul`
   height: 100%;
   overflow: scroll;
+  background-color: rgba(224, 223, 220, 70%);
+  border-radius: 20px;
+  position: relative;
 `;
 
 const TodoItem = styled.li`
   display: flex;
   width: 100%;
   padding: 5px 0;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid white;
 
   & button {
     padding: 5px 7px;
@@ -255,6 +276,8 @@ const TodoItem = styled.li`
     border: 1px solid gray;
     border-radius: 5px;
     transition-duration: 0.3s;
+    color: white;
+    background-color: rgba(100, 100, 100, 70%);
   }
 
   & button:hover {
@@ -301,7 +324,7 @@ const ContentBox = styled.div`
   text-overflow: ellipsis;
   padding: 5px;
   text-decoration: ${(props) => props.isChecked && 'line-through'};
-  color: ${(props) => props.isChecked && 'lightgray'};
+  color: ${(props) => props.isChecked && 'gray'};
 `;
 
 export default Todo;

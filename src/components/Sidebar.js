@@ -23,10 +23,16 @@ const SidebarBox = styled.div`
   font-size: 35px;
   border-right: 1px solid lightgray;
   width: 100%;
+  background-color: rgba(0, 0, 0, 20%);
 
   a {
     padding: 20px 0;
-    color: black;
+    color: white;
+    transition-duration: 0.3s;
+  }
+
+  a:hover {
+    color: gray;
   }
 `;
 

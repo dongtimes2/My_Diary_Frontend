@@ -1,6 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 import { reset } from 'styled-reset';
 
+import Forest from '../images/forest.jpg';
+
 const GlobalStyles = createGlobalStyle`
   ${reset}
 
@@ -13,6 +15,8 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'NotoSerifKR', sans-serif;
+    background-image: url(${Forest});
+    background-size: 100% 100%;
   }
 
   button {
