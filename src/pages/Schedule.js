@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import Calendar from '../components/Calendar';
+import LiveClock from '../components/LiveClock';
 import Modal from '../components/Modal';
 import ModalPortal from '../components/ModalPortal';
 import Sidebar from '../components/Sidebar';
@@ -28,6 +29,7 @@ const Schedule = () => {
           <div className="weather-area">
             <WeatherInfo />
           </div>
+          <LiveClock />
         </CalendarBox>
         <TodoBox>
           <Todo

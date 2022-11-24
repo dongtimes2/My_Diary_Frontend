@@ -12,7 +12,7 @@ import SaveButton from './SaveButton';
 
 const Todo = ({ onShowModal, setSelectedTodo }) => {
   const [todoList, setTodoList] = useState(['initial']);
-  const [allTodoList, setAllTodoList] = useState([]);
+  const [allTodoList, setAllTodoList] = useState(['initial']);
   const [isDailyMode, setIsDailyMode] = useState(true);
 
   const selectedDate = useRecoilValue(selectedDateState);
